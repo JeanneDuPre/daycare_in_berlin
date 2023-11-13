@@ -2,7 +2,7 @@ import pandas as pd
 
 def get_data():
     # Read Excel files
-    df_1 = pd.read_excel('data/schule_kita/kitaliste_aktuell.xlsx')
+    df_1 = pd.read_excel('data/kitaliste_aktuell.xlsx')
 
     # Drop the last row
     df_1 = df_1.iloc[:-1]
