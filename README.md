@@ -9,3 +9,6 @@
 ### Distribution of daycare places by district and type of provider
 #### The majority of daycare slots are available in the districts of Pankow, Mitte, Lichtenberg, and Tempelhof-Schöneberg. The fewest daycare slots are situated in Spandau, Reinickendorf, Charlottenburg-Wilmersdorf, and Steglitz-Zehlendorf.
 ![alt text](https://github.com/JeanneDuPre/daycare_in_berlin/blob/main/images/stacked_bar_plot_Tr%C3%A4ger_Pl%C3%A4tze.png)
+### Distribution of daycare/kindergarten places and children to be cared for
+#### In Berlin, sufficient childcare places have only been provided in the districts of Mitte and Pankow. Conversely, ten additional districts exhibit a significant undersupply in childcare services. The available data solely pertains to the age range of 0 to 5 years. Considering that in Berlin, entitlement to a childcare place begins at the age of one, and children aged 6 are not individually accounted for, this discrepancy can be disregarded in this context.
+![alt text](https://github.com/JeanneDuPre/daycare_in_berlin/blob/main/images/combo_bar_line_Kitaplatz_Kinderzahl.png)
