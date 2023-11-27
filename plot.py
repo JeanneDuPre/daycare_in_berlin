@@ -1,4 +1,6 @@
 import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
 from matplotlib.ticker import FuncFormatter
 
 ###pie chart: Trägerarten in Berlin###
@@ -113,3 +115,57 @@ def plot_stacked_percentage_tragerart_platze(df):
 
     plt.show()
 
+##combo chart (pie chart- zu betreuende Kinder, bar chart- Kitaplätze): Kitaplätze und zu betreuende Kinder in Berlin 
+def plot_stacked_percentage_trägerart_plätze():
+    # Load the datasets
+    df = pd.read_csv('data/kitaliste_gesamt_Stand_2023-11-16.csv')
+    mask = pd.read_csv('data/bevölkerung_ortsteile_gesamt_Stand_2023-11-16.csv')
+    df_3 = pd.read_excel('data/2023_data.xlsx')
+
+    # Transform the dataset
+    grouped_df = df.groupby(['Betreuungsbezirk'])['Plätze'].sum().reset_index()
+
+    # Create the figure and axis
+    fig, ax1 = plt.subplots(figsize=(10, 6))
+
+    # Plot the bar chart
+    ax1.bar(grouped_df['Betreuungsbezirk'], grouped_df['Plätze'], alpha=0.7)
+    
+    # Titles and labels
+    plt.suptitle('Kitaplätze und zu betreuende Kinder in Berlin', fontsize=16)
+    plt.title('''In Berlin wurden bisher lediglich in den Bezirken Mitte und Pankow ausreichend Kinderbetreuungsplätze bereitgestellt.
+Hingegen zeigen zehn weitere Bezirke eine deutliche Unterversorgung in der Betreuung.
+Die verfügbaren Daten beziehen sich ausschließlich auf die Altersspanne von 0 bis 5 Jahren.
+Da in Berlin ein Anspruch auf einen Betreuungsplatz bereits ab dem ersten Lebensjahr besteht und Kinder
+ab dem Alter von 6 Jahren nicht eigens erfasst werden, kann die Verschiebung an dieser Stelle unberücksichtigt bleiben.''', fontsize=10, color='grey')
+    plt.ylabel('Kitaplätze', fontsize=12)
+    plt.xticks(rotation=90)
+    ax1.yaxis.grid(True)
+
+    # Adjust spines
+    for spine in ['top', 'left', 'right', 'bottom']:
+        ax1.spines[spine].set_visible(False)
+
+    # Create second y-axis for line chart
+    ax2 = ax1.twinx()
+    ax2.set_ylabel('Zahl der zu betreuenden Kinder', fontsize=12)
+    ax2.plot(df_3['Betreuungsbezirk'], df_3['unter_6'], color='red', label='unter 6 (2023)', linewidth=3.0, alpha=0.9)
+    ax2.plot(mask['Bez-Name'], mask['Kitaplätze'], color='blue', label='0 bis 5 (2020)', alpha=0.6)
+    ax2.legend(loc=(0.8, 0.9))
+    ax2.spines['top'].set_visible(False)
+
+    # Set y-axis limits
+    combined_data = np.concatenate([grouped_df['Plätze'], df_3['unter_6']], axis=None)
+    valid_values = combined_data[~np.isnan(combined_data) & np.isfinite(combined_data)]
+    max_value = max(valid_values)
+    ax1.set_ylim(0, max_value + 1000)
+    ax2.set_ylim(0, max_value + 1000)
+    ax1.yaxis.set_major_locator(plt.MaxNLocator(integer=True))
+
+    # Adjust margins around the plot area
+    plt.subplots_adjust(left=None, bottom=0.05, right=None, top=0.78, wspace=None, hspace=None)
+    
+    # Adding a footnote
+    plt.figtext(0.8, -0.28, 'Graphik: JeanneDuPre | Daten: Berliner Senat | November 2023', ha='center', fontsize=10, color='grey')
+
+    plt.show()
